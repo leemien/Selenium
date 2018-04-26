@@ -1,4 +1,4 @@
-package cn.lee.selenium.test;
+package cn.lee.selenium.test.category;
 
 import java.io.IOException;
 import java.util.List;
@@ -9,6 +9,7 @@ import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -102,7 +103,7 @@ public class CategoryTest {
 
 	}
 
-	@Test
+	@AfterClass
 	public static void tearDown() {
 		// driver.close();
 	}
