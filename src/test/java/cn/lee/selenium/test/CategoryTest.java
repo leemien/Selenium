@@ -28,10 +28,16 @@ public class CategoryTest {
 		GmUtil.loginStation(driver);
 	}
 
+	/**
+	 * 使用已经用过的名称添加一级分类,断言失败
+	 * 
+	 * @throws InterruptedException
+	 * 
+	 */
 	@Test
-	public void category1Test() {
+	public void category1Test01() throws InterruptedException {
 		driver.get(stationUrl + "/station/new#/merchandise/manage/list/cate_manage");
-		
+
 		WebElement element = driver.findElement(By.xpath("//div[text()='一级分类']/parent::*/parent::*/parent::div"));
 		List<WebElement> elementArray = element.findElements(By.xpath("./div[2]/div"));
 		String category1_name = null;
@@ -48,14 +54,53 @@ public class CategoryTest {
 			driver.findElement(By.xpath("//label[text()='一级分类名称']/following-sibling::div[1]/input")).sendKeys("蔬菜");
 			driver.findElement(By.xpath("//label[text()='选择图标']/following-sibling::div[1]/div/div/div[3]/img")).click();
 			driver.findElement(By.xpath("//button[text()='保存']")).click();
-			String tip_text = driver.findElement(By.xpath("//div[@class='panel-body']")).getText();
-	        try {
+			Thread.sleep(500);
+
+			exist = GmUtil.checkTipExist(driver, "存在");
+
+			try {
 				GmUtil.screenShot(driver, "category1Test.png");
 			} catch (IOException e) {
 				logger.error("截图遇到错误: " + e);
 			}
-			Assert.assertEquals(tip_text.contains("该分类已存在"), true,"新建一级分类,使用已经存在的名称,断言失败");
+			driver.findElement(By.xpath("//button[text()='取消']")).click();
+			Assert.assertEquals(exist, true, "新建一级分类,使用已经存在的名称,断言失败");
 		}
+	}
+
+	/**
+	 * 添加一个一级分类,断言成功
+	 * 
+	 * @throws InterruptedException
+	 * 
+	 */
+	@Test
+	public void category1Test02() throws InterruptedException {
+		driver.get(stationUrl + "/station/new#/merchandise/manage/list/cate_manage");
+		String category1_name = GmUtil.getRandomString(8);
+
+		driver.findElement(By.xpath("//div[text()='一级分类']/following-sibling::div[1]")).click();
+		driver.findElement(By.xpath("//label[text()='一级分类名称']/following-sibling::div[1]/input"))
+				.sendKeys(category1_name);
+		driver.findElement(By.xpath("//label[text()='选择图标']/following-sibling::div[1]/div/div/div[3]/img")).click();
+		driver.findElement(By.xpath("//button[text()='保存']")).click();
+
+		Thread.sleep(500);
+		boolean exist = GmUtil.checkTipExist(driver, "成功");
+
+		try {
+			GmUtil.screenShot(driver, "category1Test.png");
+		} catch (IOException e) {
+			logger.error("截图遇到错误: " + e);
+		}
+		Assert.assertEquals(exist, true, "新建一级分类,使用已经存在的名称,断言失败");
+
+		driver.findElement(By.xpath("//span[text()='×']")).click();
+		// 找到它对应的删除按钮
+		driver.findElement(By.xpath("//div[text()='" + category1_name + "']/../following-sibling::div[1]/span[2]"))
+				.click();
+		driver.findElement(By.xpath("//button[text()='确定']")).click();
+
 	}
 
 	@Test
