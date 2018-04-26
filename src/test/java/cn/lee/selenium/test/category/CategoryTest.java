@@ -9,6 +9,7 @@ import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
+import org.testng.Reporter;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -37,8 +38,8 @@ public class CategoryTest {
 	 */
 	@Test
 	public void category1Test01() throws InterruptedException {
+		Reporter.log("创建一级分类使用重复名称");
 		driver.get(stationUrl + "/station/new#/merchandise/manage/list/cate_manage");
-
 		WebElement element = driver.findElement(By.xpath("//div[text()='一级分类']/parent::*/parent::*/parent::div"));
 		List<WebElement> elementArray = element.findElements(By.xpath("./div[2]/div"));
 		String category1_name = null;
