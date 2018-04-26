@@ -56,7 +56,7 @@ public class CategoryTest {
 			driver.findElement(By.xpath("//button[text()='保存']")).click();
 			Thread.sleep(500);
 
-			exist = GmUtil.checkTipExist(driver, "存在");
+			exist = GmUtil.checkTipExist(driver, "该分类已存在");
 
 			try {
 				GmUtil.screenShot(driver, "category1Test.png");
@@ -86,20 +86,19 @@ public class CategoryTest {
 		driver.findElement(By.xpath("//button[text()='保存']")).click();
 
 		Thread.sleep(500);
-		boolean exist = GmUtil.checkTipExist(driver, "成功");
+		boolean exist = GmUtil.checkTipExist(driver, "成功增加");
 
 		try {
 			GmUtil.screenShot(driver, "category1Test.png");
+			Assert.assertEquals(exist, true, "新建一级分类,使用已经存在的名称,断言失败");
 		} catch (IOException e) {
 			logger.error("截图遇到错误: " + e);
+		} finally {
+			// 找到它对应的删除按钮
+			driver.findElement(By.xpath("//div[text()='" + category1_name + "']/../following-sibling::div[1]/span[2]"))
+					.click();
+			driver.findElement(By.xpath("//button[text()='确定']")).click();
 		}
-		Assert.assertEquals(exist, true, "新建一级分类,使用已经存在的名称,断言失败");
-
-		driver.findElement(By.xpath("//span[text()='×']")).click();
-		// 找到它对应的删除按钮
-		driver.findElement(By.xpath("//div[text()='" + category1_name + "']/../following-sibling::div[1]/span[2]"))
-				.click();
-		driver.findElement(By.xpath("//button[text()='确定']")).click();
 
 	}
 
