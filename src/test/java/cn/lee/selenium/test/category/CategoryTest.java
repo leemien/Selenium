@@ -104,9 +104,31 @@ public class CategoryTest {
 
 	}
 
+	@Test
+	public void searchSalemenu() {
+		driver.get(stationUrl + "/station/new#/merchandise/manage/sale");
+		WebElement timeElement = driver.findElements(By.xpath("//div[text()='全部运营时间']")).get(0);
+		timeElement.click();
+		List<WebElement> elements = driver.findElements(By.xpath(
+				"//div[text()='全部运营时间' and @class='gm-select-option selected'][last()]/following-sibling::div"));
+        System.out.println(elements.size());
+		for(WebElement element:elements){
+			System.out.println(element.getText());
+			element.click();
+			timeElement.click();
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+	}
+
 	@AfterClass
 	public static void tearDown() {
-		// driver.close();
+		//driver.close();
 	}
 
 }
